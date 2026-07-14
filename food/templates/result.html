@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <title>Delfood</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007BFF'/><path d='M30 40a20 20 0 0 1 40 0c0 15-10 20-20 20s-20-5-20-20zM45 60v20h10V60z' fill='%23ffffff'/></svg>" type="image/svg+xml">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link href="/static/css/style.css" rel="stylesheet" />
+  
+  <style>
+    /* BLUE THEME UPDATES */
+    :root {
+        --theme-blue: #007BFF;
+        --theme-dark: #2d3436;
+    }
+
+    body { background-color: #fafafa; padding-top: 40px; padding-bottom: 80px; }
+    
+    /* Bigger Back Button, No Arrow */
+    .back-btn { 
+        display: inline-block; 
+        margin-bottom: 30px; 
+        font-weight: 700; 
+        font-size: 20px; /* Made the text larger */
+        color: var(--theme-blue); 
+        text-decoration: none; 
+    }
+    .back-btn:hover { color: var(--theme-dark); text-decoration: none; }
+    
+    /* TasteAtlas Spotlight Card - Made wider for full screen */
+    .taste-atlas-card { background: #fff; border-left: 5px solid var(--theme-blue); padding: 35px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 50px; }
+    .taste-atlas-card h3 { font-weight: 700; color: var(--theme-dark); margin-bottom: 15px; font-size: 26px; }
+    .taste-atlas-card p { font-size: 16px; margin: 0; }
+    .taste-badge { background: var(--theme-blue); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-block; margin-bottom: 15px; }
+    
+    /* Visual Timeline - Expanded width for full screen feel */
+    .visual-timeline { display: flex; flex-direction: column; gap: 0; position: relative; max-width: 800px; /* Increased from 600px */ margin: 0 auto; padding-left: 50px; border-left: 4px dashed #ddd; }
+    .layer-step { position: relative; display: flex; align-items: center; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 35px; transition: 0.3s; }
+    .layer-step:hover { transform: translateX(10px); border-left: 5px solid var(--theme-blue); }
+    
+    .layer-step::before { 
+        content: attr(data-time); 
+        position: absolute; 
+        left: -145px; 
+        width: 80px;  
+        text-align: center;
+        font-weight: 700; 
+        color: var(--theme-blue); 
+        font-size: 14px; 
+        background: #fff; 
+        padding: 6px 0; 
+        border-radius: 10px; 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    }
+    
+    .layer-step::after { 
+        content: ''; 
+        position: absolute; 
+        left: -56px; 
+        top: 50%; 
+        transform: translateY(-50%); 
+        width: 16px; 
+        height: 16px; 
+        background: var(--theme-blue); 
+        border-radius: 50%; 
+        border: 3px solid #fff; 
+    }
+    
+    /* Icon styling */
+    .layer-icon { width: 70px; height: 70px; background: #f0f3f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--theme-blue); margin-right: 25px; flex-shrink: 0; }
+    .layer-content h5 { font-weight: 700; margin: 0 0 8px 0; font-size: 18px; }
+    .layer-content p { margin: 0; font-size: 15px; color: #666; }
+   /* Circular Back Button */
+    .back-btn { 
+        display: inline-flex; /* Flexbox makes centering the icon effortless */
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background-color: var(--theme-blue); 
+        color: #fff; 
+        border-radius: 50%; /* Makes it a perfect circle */
+        text-decoration: none; 
+        margin-bottom: 30px;
+        font-size: 17px;
+        transition: 0.3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Adds a subtle floating shadow */
+    }
+    
+    .back-btn:hover { 
+        background-color: var(--theme-dark); 
+        color: #fff; 
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid px-md-5">
+    
+    <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="taste-atlas-card">
+                <span class="taste-badge"><i class="fa fa-globe"></i> TasteAtlas Spotlight</span>
+                <h3>{{ taste_atlas.dish_name }} ({{ taste_atlas.region }})</h3>
+                <p class="text-muted">{{ taste_atlas.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <h2 style="font-weight: 700; font-size: 36px;">Visual Assembly Pattern</h2>
+        <p class="text-muted" style="font-size: 18px;">Generated Sequence for: <strong>{{ ingredients }}</strong> (Diet: {{ diet }})</p>
+    </div>
+
+    <div class="visual-timeline">
+        {% for step in recipe_steps %}
+            <div class="layer-step" data-time="{{ step.time }}">
+                <div class="layer-icon"><i class="{{ step.icon }}"></i></div>
+                <div class="layer-content">
+                    <h5>{{ loop.index }}. {{ step.title }}</h5>
+                    <p>{{ step.description }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

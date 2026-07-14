@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="recipe generator, visual recipes, diet, tasteatlas, interactive cooking" />
+  <meta name="description" content="An interactive visual recipe generator that maps global flavors and adapts to your pantry and dietary goals." />
+  <meta name="author" content="" />
+
+  <title>Delfood - Interactive Recipes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007BFF'/><path d='M30 40a20 20 0 0 1 40 0c0 15-10 20-20 20s-20-5-20-20zM45 60v20h10V60z' fill='%23ffffff'/></svg>" type="image/svg+xml">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+
+  <link href="/static/css/font-awesome.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css.map" crossorigin="anonymous" />
+
+  <link href="/static/css/style.css" rel="stylesheet" />
+  <link href="/static/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              Delfood
+            </span>
+          </a>
+          <div class="" id="">
+            <div class="User_option">
+  {% if session.user_name %}
+    <a href="javascript:void(0)" class="user_logged">
+      <i class="fa fa-user" aria-hidden="true" style="color: var(--theme-blue);"></i>
+      <span style="font-weight: 600;">Hi, {{ session.user_name.split('@')[0] }}</span> 
+    </a>
+    <a href="/logout" style="margin-left: 15px; color: #ff6b6b; font-size: 13px;">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+      <span>Logout</span>
+    </a>
+  {% else %}
+    <a href="javascript:void(0)" data-toggle="modal" data-target="#loginModal">
+      <i class="fa fa-user" aria-hidden="true"></i>
+      <span>Login</span>
+    </a>
+  {% endif %}
+</div>
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                <img src="static/images/menu.png" alt="">
+              </button>
+            </div>
+          <div id="myNav" class="overlay">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              
+              <div class="overlay-content">
+                <a href="index.html">Home</a>
+                <a href="#about">About Visual Recipes</a>
+                <a href="#map">World Map</a>
+                <a href="#testimonials">Testimonials</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+   <section class="slider_section ">
+      <div class="container ">
+        <div class="row">
+         <div class="col-lg-10 mx-auto">
+            <div class="detail-box">
+              <h1>
+                Interactive Recipe Patterns
+              </h1>
+              <p>
+                Say goodbye to long, confusing text. Enter the ingredients you have and your dietary goals to generate a step-by-step visual cooking flow.
+              </p>
+            </div>
+            <div class="find_container ">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <form action="/generate-recipe" method="POST">
+                      <div class="form-row align-items-center">
+                        <div class="form-group col-lg-4">
+                          <input type="text" class="form-control" name="ingredients" id="inputIngredients" placeholder="What's in your kitchen? (e.g., Chicken)" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                          <input type="text" class="form-control" name="diet" id="inputDiet" placeholder="Diet (e.g., Keto, Vegan)">
+                        </div>
+                        <div class="form-group col-lg-3">
+                          <select class="form-control" name="goal" id="inputGoal" style="height: 50px; border-radius: 5px; width: 100%; border: 1px solid #ddd; outline: none; padding: 0 15px; color: #666;">
+                            <option value="maintain">Maintain Weight</option>
+                            <option value="lose">Lose Weight</option>
+                            <option value="gain">Gain Muscle</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-lg-2">
+                          <div class="btn-box">
+                            <button type="submit" class="btn btn-block" style="height: 50px; border-radius: 5px;">Generate</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="slider_container">
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img1.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img2.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img3.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img4.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img1.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img2.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img3.png" alt="" />
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-box">
+            <img src="/static/images/slider-img4.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </section>
+    ```
+    </div>
+
+
+ <section id="map" class="recipe_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Zoom Into Global Flavors
+        </h2>
+        <p class="text-center mt-2">Explore our interactive map to discover cultural dishes broken down into simple visual layers.</p>
+      </div>
+      
+     <div class="interactive-map-container">
+        <div class="map-overlay"></div>
+      <!-- Ensure data-region matches your Python if/elif logic -->
+<a href="javascript:void(0)" class="map-pin pin-italy" data-ingredients="Pasta, Olive Oil, Garlic, Basil" data-region="italy">
+    <i class="fa-solid fa-pizza-slice"></i> Italian Assembly
+</a>
+
+<a href="javascript:void(0)" class="map-pin pin-japan" data-ingredients="Rice, Salmon, Seaweed, Soy Sauce" data-region="japan">
+    <i class="fa-solid fa-bowl-rice"></i> Japanese Layers
+</a>
+
+<a href="javascript:void(0)" class="map-pin pin-mexico" data-ingredients="Tortillas, Beans, Avocado, Lime" data-region="mexico">
+    <i class="fa-solid fa-pepper-hot"></i> Mexican Timing
+</a>
+
+<a href="javascript:void(0)" class="map-pin pin-india" data-ingredients="Lentils, Rice, Turmeric, Cumin" data-region="india">
+    <i class="fa-solid fa-seedling"></i> Indian Spices
+</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="app_section">
+    <div class="container">
+      <div class="col-md-9 mx-auto">
+        <div class="row">
+          <div class="col-md-7 col-lg-8">
+            <div class="detail-box">
+              <h2>
+                <span> Powered by</span> <br>
+                Dietary AI Engine
+              </h2>
+              <p>
+                Inspired by Chef GPT, our engine doesn't just give you recipes—it adapts them. Whether your goal is to lose weight, gain muscle, or stick to a strict Keto/Vegan diet, we map the exact ingredients in your kitchen to a perfectly portioned visual sequence.
+              </p>
+              <div class="app_btn_box">
+                <a href="" class="mr-1">
+                  <img src="static/images/google_play.png" class="box-img" alt="">
+                </a>
+                <a href="">
+                  <img src="static/images/app_store.png" class="box-img" alt="">
+                </a>
+              </div>
+              <a href="" class="download_btn">
+                Download Now
+              </a>
+            </div>
+          </div>
+          <div class="col-md-5 col-lg-4">
+            <div class="img-box">
+              <img src="static/images/mobile.png" class="box-img" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="about" class="about_section layout_padding">
+    <div class="container">
+      <div class="col-md-11 col-lg-10 mx-auto">
+        <div class="heading_container heading_center">
+          <h2>
+            Visual Cooking Flow
+          </h2>
+        </div>
+        <div class="box">
+          <div class="col-md-7 mx-auto">
+            <div class="img-box">
+              <img src="static/images/about-img.jpg" class="box-img" alt="">
+            </div>
+          </div>
+          <div class="detail-box">
+            <p>
+              We believe learning to cook shouldn't require reading endless paragraphs of text. We transform traditional recipes into a timed sequence of visual blocks. By focusing on minimal text and emphasizing ingredient layering and assembly patterns, even complete beginners can easily understand and execute complex dishes.
+            </p>
+            <a href="">
+              <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news_section">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Latest Features
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="box">
+            <div class="img-box">
+              <img src="static/images/n1.jpg" class="box-img" alt="">
+            </div>
+            <div class="detail-box">
+              <h4>
+                Smart Pantry Generation
+              </h4>
+              <p>
+                No need to go to the store. Just tell us what ingredients are sitting in your fridge right now, and our engine will generate a stunning, easy-to-follow visual recipe to use them up efficiently.
+              </p>
+              <a href="">
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box">
+            <div class="img-box">
+              <img src="static/images/n2.jpg" class="box-img" alt="">
+            </div>
+            <div class="detail-box">
+              <h4>
+                TasteAtlas Integration
+              </h4>
+              <p>
+                Our interactive zooming map lets you explore the globe. Click on any region to see their deep cultural recipes broken down into our signature step-by-step assembly patterns.
+              </p>
+              <a href="">
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="client_section layout_padding">
+    <div class="container">
+      <div class="col-md-11 col-lg-10 mx-auto">
+        <div class="heading_container heading_center">
+          <h2>
+            Community Feedback
+          </h2>
+        </div>
+        <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="detail-box">
+                <h4>
+                  Beginner Cook
+                </h4>
+                <p>
+                  "Reading long paragraphs of recipes always confused me and ruined my timing. The visual blocks and timed sequence patterns here make assembling dishes incredibly easy. I finally learned how to cook without burning things!"
+                </p>
+                <i class="fa fa-quote-left" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="detail-box">
+                <h4>
+                  Fitness Enthusiast
+                </h4>
+                <p>
+                  "I needed to lose weight but hated meal planning. I just inputted my dietary restrictions and what was in my kitchen, and it generated a visual step-by-step layering guide for my weekly prep. An absolute game-changer."
+                </p>
+                <i class="fa fa-quote-left" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="detail-box">
+                <h4>
+                  Travel Foodie
+                </h4>
+                <p>
+                  "Zooming in on the world map and finding authentic cultural recipes is amazing. I learned how to properly sequence a traditional Japanese dish with minimal text and maximum visual flow!"
+                </p>
+                <i class="fa fa-quote-left" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+          <a class="carousel-control-prev d-none" href="#customCarousel1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#customCarousel1" role="button" data-slide="next">
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer_container">
+    <section class="info_section ">
+      <div class="container">
+        <div class="contact_box">
+  <a href="#about"><i class="fa fa-info-circle" aria-hidden="true"></i></a> <!-- Added About Icon Here -->
+  <a href=""><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+  <a href=""><i class="fa fa-phone" aria-hidden="true"></i></a>
+  <a href=""><i class="fa fa-envelope" aria-hidden="true"></i></a>
+</div>
+        <div class="info_links">
+          <ul>
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#map">World Map</a></li>
+            <li><a href="#testimonials">Testimonial</a></li>
+          </ul>
+        </div>
+        <div class="social_box">
+          <a href=""><i class="fa fa-facebook" aria-hidden="true"></i></a>
+          <a href=""><i class="fa fa-twitter" aria-hidden="true"></i></a>
+          <a href=""><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </section>
+    <footer class="footer_section">
+      <div class="container">
+        <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved By Delfood.<br>
+        </p>
+      </div>
+    </footer>
+    </div>
+
+
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 15px; border: none;">
+      <div class="modal-header" style="background-color: var(--theme-blue); border-top-left-radius: 15px; border-top-right-radius: 15px;">
+        <h5 class="modal-title">Welcome Back</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color: white;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4">
+        <form action="/login" method="POST">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="enter email" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" placeholder="enter password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        <div class="text-center mt-3">
+  <small>Don't have an account? 
+    <a href="javascript:void(0)" data-toggle="modal" data-target="#signupModal" data-dismiss="modal" style="color: var(--theme-blue);">Sign Up</a>
+  </small>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 15px;">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color: white;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4">
+        <form action="/signup" method="POST">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" placeholder="new email" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" placeholder="create password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+    document.querySelectorAll('.map-pin').forEach(pin => {
+      pin.addEventListener('click', function() {
+        // 1. Get the authentic ingredients for the clicked region
+        const regionIngredients = this.getAttribute('data-ingredients');
+        
+        // 2. Find the form inputs at the top of the page
+        const ingredientInput = document.getElementById('inputIngredients');
+        const form = document.querySelector('form[action="/generate-recipe"]');
+        
+        // 3. Populate the input and automatically submit the form to Python!
+        if (ingredientInput && form) {
+          ingredientInput.value = regionIngredients;
+          form.submit();
+        }
+      });
+    });
+  </script>
+<script>
+    function openNav() {
+  // 1. Open the blue overlay
+  document.getElementById("myNav").style.width = "100%"; 
+  
+  // 2. Hide the hamburger button so it doesn't overlap with the X
+  document.querySelector(".custom_menu-btn").style.visibility = "hidden";
+}
+
+function closeNav() {
+  // 1. Close the blue overlay
+  document.getElementById("myNav").style.width = "0%"; 
+  
+  // 2. Bring the hamburger button back when the menu is closed
+  document.querySelector(".custom_menu-btn").style.visibility = "visible";
+}
+document.querySelectorAll('.map-pin').forEach(pin => {
+    pin.addEventListener('click', function() {
+        const ingredients = this.getAttribute('data-ingredients');
+        const regionName = this.getAttribute('data-region');
+        
+        const input = document.getElementById('inputIngredients');
+        const form = document.querySelector('form[action="/generate-recipe"]');
+        
+        if (input && form) {
+            input.value = ingredients;
+            
+            // Add a hidden input to pass the region to Python
+            let regionInput = document.createElement('input');
+            regionInput.type = 'hidden';
+            regionInput.name = 'region';
+            regionInput.value = regionName;
+            form.appendChild(regionInput);
+            
+            form.submit();
+        }
+    });
+});
+  </script>
+
+  <script src="/static/js/jquery-3.4.1.min.js"></script>
+  <script src="/static/js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" crossorigin="anonymous"></script>
+  <script src="/static/js/custom.js"></script>
+
+</body>
+</html>
